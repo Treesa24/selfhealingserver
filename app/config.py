@@ -14,6 +14,7 @@ DISK_THRESHOLD = float(os.getenv("DISK_THRESHOLD", 90))
 # Docker
 DOCKER_SOCKET = os.getenv("DOCKER_SOCKET", "unix://var/run/docker.sock")
 TARGET_CONTAINER = os.getenv("TARGET_CONTAINER", "demo_app")
+TARGET_APP_URL = os.getenv("TARGET_APP_URL", "http://demo_app:8080/health")
 
 
 

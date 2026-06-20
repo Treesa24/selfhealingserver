@@ -1,10 +1,12 @@
 import time
 import schedule
+import threading
 from app.config import MONITOR_INTERVAL, TARGET_CONTAINER
 from app.monitor import collect_metrics
 from app.health_check import get_health_status
 from app.anomaly_detector import is_anomaly, load_model, train_model, generate_synthetic_training_data
 from app.healer import heal
+from app.metrics_exporter import run_metrics_server, update_monitoring_state
 
 from app.logger import log_metrics, log_event
 
@@ -31,6 +33,7 @@ def monitor_cycle(model):
 
     # 3. Anomaly detection
     anomaly = is_anomaly(cpu, ram, disk, model)
+    update_monitoring_state(health, anomaly)
 
     # 4. Log metrics
     log_metrics(cpu, ram, disk, health, anomaly)
@@ -50,6 +53,8 @@ def monitor_cycle(model):
 
 def run():
     """Start the self-healing monitoring loop."""
+    threading.Thread(target=run_metrics_server, daemon=True).start()
+
     print("=" * 55)
     print("  🛡️  Self-Healing Server — Monitoring Started")
     print("=" * 55)

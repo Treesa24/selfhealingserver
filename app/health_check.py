@@ -1,6 +1,6 @@
 import docker
 import httpx
-from app.config import TARGET_CONTAINER
+from app.config import TARGET_APP_URL, TARGET_CONTAINER
 from app.logger import log_event
 
 
@@ -20,7 +20,7 @@ def is_container_running(container_name: str = TARGET_CONTAINER) -> bool:
         return False
 
 
-def is_app_responding(url: str = "http://localhost:8080/health") -> bool:
+def is_app_responding(url: str = TARGET_APP_URL) -> bool:
     """Check if the application HTTP endpoint responds correctly."""
     try:
         response = httpx.get(url, timeout=5)

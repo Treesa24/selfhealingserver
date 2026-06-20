@@ -41,7 +41,7 @@ def is_anomaly(cpu: float, ram: float, disk: float, model: IsolationForest = Non
         sample = np.array([[cpu, ram, disk]])
         prediction = model.predict(sample)
         # IsolationForest: -1 = anomaly, 1 = normal
-        result = prediction[0] == -1
+        result = bool(prediction[0] == -1)
         log_event("ANOMALY", f"ML Detection — CPU:{cpu} RAM:{ram} DISK:{disk} → {'ANOMALY' if result else 'Normal'}")
         return result
     else:
